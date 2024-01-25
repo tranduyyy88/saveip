@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get IP and Save to File</title>
+</head>
+
+<body>
+
+    <a href="#" id="saveLink">Save IP to File</a>
+
+    <script>
+        document.getElementById('saveLink').addEventListener('click', function () {
+            // Fetch the user's IP address from ipinfo.io
+            fetch('https://ipinfo.io/json')
+                .then(response => response.json())
+                .then(data => {
+                    // Extract the IP address
+                    var ipAddress = data.ip;
+
+                    // Create a Blob with the IP address
+                    var blob = new Blob([ipAddress], { type: 'text/plain' });
+
+                    // Create a link element
+                    var link = document.createElement('a');
+
+                    // Set the download attribute with the desired file name
+                    link.download = 'ip_address.txt';
+
+                    // Create a URL for the Blob and set it as the href attribute
+                    link.href = window.URL.createObjectURL(blob);
+
+                    // Append the link to the document
+                    document.body.appendChild(link);
+
+                    // Simulate a click on the link to trigger the download
+                    link.click();
+
+                    // Remove the link from the document
+                    document.body.removeChild(link);
+                })
+                .catch(error => {
+                    console.error('Error fetching IP address:', error);
+                });
+        });
+    </script>
+
+</body>
+
+</html>
